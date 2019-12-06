@@ -473,6 +473,7 @@ const questions = [
    callback(archetypes);
    form.remove();
    display.innerHTML = `
+     ${archetypes[0].name} <br/> ${archetypes[0].shortDescription} <hr/>
      ${archetypes[1].name} <br/> ${archetypes[1].shortDescription} <hr/>
      ${archetypes[2].name} <br/> ${archetypes[2].shortDescription} <hr/>
      ${archetypes[3].name} <br/> ${archetypes[3].shortDescription} <hr/>
