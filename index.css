@@ -1,0 +1,12 @@
+.container {
+    height: auto;
+    display: grid;
+  }
+  .question {
+    font-weight: bold;
+    font-size: 110%;
+  }
+  .display {
+    height: auto;
+    width: 100%;
+  }
