@@ -4,7 +4,8 @@ body {
     display: grid;
     grid-auto-rows: column;
     grid-gap: 1.1em;
-    color: C;
+    max-width: 700px;
+    margin: 0 auto;
   }
   .display {
     height: auto;
