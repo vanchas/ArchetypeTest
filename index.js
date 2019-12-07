@@ -389,7 +389,7 @@ const questions = [
  form.className = 'wrapper';
  document.body.append(form);
  form.setAttribute('method', 'post');
- // form.setAttribute('onsubmit', 'FA();return false;');
+ form.setAttribute('onsubmit', 'FA();return false;');
  form.setAttribute('name', 'set_from');
  
  let attributeDataId;
@@ -425,66 +425,41 @@ const questions = [
    });
  }
  
- questions.forEach((question,qwsIndex) => {
-   renderForm(question,qwsIndex);  
+ questions.forEach((question) => {
+   renderForm(question);  
  });
  
  let questionsCollection = document.querySelectorAll('.container');
- questionsCollection.forEach((collectionItem,collectionIndex) => { //name соответсвует порядку вопроса
-   
-   collectionItem.children[1].children[0].setAttribute('name', collectionIndex);
-   collectionItem.children[2].children[0].setAttribute('name', collectionIndex);
-   collectionItem.children[3].children[0].setAttribute('name', collectionIndex);
-   collectionItem.children[4].children[0].setAttribute('name', collectionIndex);
-   collectionItem.children[5].children[0].setAttribute('name', collectionIndex);
+ questionsCollection.forEach((collectionItem,collectionIndex) => {
+   let inputs = collectionItem.querySelectorAll('.input');
+   inputs.forEach((input, index) => {
+     inputs[index].setAttribute('name', collectionIndex);
+   });
  });
  
  let submit = document.createElement('input');
  submit.setAttribute('type', 'submit');
  submit.setAttribute('onclick', 'FA(sortByCount); return false;');
- // submit.addEventListener('click', FA);
  submit.className = 'btn-submit';
  form.append(submit);
  
  function FA(callback) {
    let radio = document.getElementsByClassName('input');
-   //наполняет массив каждого архетипа ответами из формы
      for (let radioItem = 0; radioItem < radio.length; radioItem++) {
        for (let archetype = 0; archetype < archetypes.length; archetype++) {
           if (radio[radioItem].checked && 
               radio[radioItem].getAttribute('data-id') == archetypes[archetype].id) {
             archetypes[archetype].counting.push(radio[radioItem].value);
+            archetypes[archetype].counting = archetypes[archetype].counting.reduce((sum, current) => sum + parseInt(current), 0);
           }
        }
      }
-    archetypes[0].counting = archetypes[0].counting.reduce((sum, current) => sum + parseInt(current), 0);
-    archetypes[1].counting = archetypes[1].counting.reduce((sum, current) => sum + parseInt(current), 0);
-    archetypes[2].counting = archetypes[2].counting.reduce((sum, current) => sum + parseInt(current), 0);
-    archetypes[3].counting = archetypes[3].counting.reduce((sum, current) => sum + parseInt(current), 0);
-    archetypes[4].counting = archetypes[4].counting.reduce((sum, current) => sum + parseInt(current), 0);
-    archetypes[5].counting = archetypes[5].counting.reduce((sum, current) => sum + parseInt(current), 0);
-    archetypes[6].counting = archetypes[6].counting.reduce((sum, current) => sum + parseInt(current), 0);
-    archetypes[7].counting = archetypes[7].counting.reduce((sum, current) => sum + parseInt(current), 0);
-    archetypes[8].counting = archetypes[8].counting.reduce((sum, current) => sum + parseInt(current), 0);
-    archetypes[9].counting = archetypes[9].counting.reduce((sum, current) => sum + parseInt(current), 0);
-    archetypes[10].counting = archetypes[10].counting.reduce((sum, current) => sum + parseInt(current), 0);
-    archetypes[11].counting = archetypes[11].counting.reduce((sum, current) => sum + parseInt(current), 0);
- 
    callback(archetypes);
    form.remove();
-   display.innerHTML = `
-     ${archetypes[0].name} <br/> ${archetypes[0].shortDescription} <hr/>
-     ${archetypes[1].name} <br/> ${archetypes[1].shortDescription} <hr/>
-     ${archetypes[2].name} <br/> ${archetypes[2].shortDescription} <hr/>
-     ${archetypes[3].name} <br/> ${archetypes[3].shortDescription} <hr/>
-     ${archetypes[4].name} <br/> ${archetypes[4].shortDescription} <hr/>
-     ${archetypes[5].name} <br/> ${archetypes[5].shortDescription} <hr/>
-     ${archetypes[6].name} <br/> ${archetypes[6].shortDescription} <hr/>
-     ${archetypes[7].name} <br/> ${archetypes[7].shortDescription} <hr/>
-     ${archetypes[8].name} <br/> ${archetypes[8].shortDescription} <hr/>
-     ${archetypes[9].name} <br/> ${archetypes[9].shortDescription} <hr/>
-     ${archetypes[10].name} <br/> ${archetypes[10].shortDescription} <hr/>
-     ${archetypes[11].name} <br/> ${archetypes[11].shortDescription} <hr/>`;
+   
+   archetypes.forEach((item, index) => {
+     display.insertAdjacentHTML('beforeend', `${archetypes[index].name} <br/> ${archetypes[index].shortDescription} <hr/>`);
+   });
  }
  
  function sortByCount(arr) {
@@ -494,4 +469,3 @@ const questions = [
  let display = document.createElement('div');
  display.className = "display";
  document.body.append(display);
- 
