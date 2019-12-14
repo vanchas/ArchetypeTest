@@ -456,6 +456,8 @@ const questions = [
      }
    callback(archetypes);
    form.remove();
+   document.querySelector('.head').textContent = "";
+   document.querySelector('.head').textContent = "Ваш результат";
    
    archetypes.forEach((item, index) => {
      display.insertAdjacentHTML('beforeend', `${archetypes[index].name} <br/> ${archetypes[index].shortDescription} <hr/>`);
@@ -469,3 +471,16 @@ const questions = [
  let display = document.createElement('div');
  display.className = "display";
  document.body.append(display);
+
+ //scroll-line
+ window.onscroll = function() {
+  scrollFunction()
+};
+
+function scrollFunction() {
+  let winHiddenScroll = document.body.scrollTop || document.documentElement.scrollTop;
+  let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  let scrolled = (winHiddenScroll / height) * 100;
+  document.querySelector('.progress-bar').style.width = scrolled + "%";
+  document.querySelector('.progress-bar').innerHTML = `<span>...</span>` + Math.round(scrolled) + "%";
+}
