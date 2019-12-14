@@ -456,9 +456,11 @@ const questions = [
      }
    callback(archetypes);
    form.remove();
+   document.querySelector('.progress-container').remove();
    document.querySelector('.head').textContent = "";
    document.querySelector('.head').textContent = "Ваш результат";
-   
+   window.scrollTo(0,0);
+
    archetypes.forEach((item, index) => {
      display.insertAdjacentHTML('beforeend', `${archetypes[index].name} <br/> ${archetypes[index].shortDescription} <hr/>`);
    });

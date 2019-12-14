@@ -5,7 +5,7 @@ body {
     margin: 0;
   }
   .progress-container {
-    width: 100%;
+    max-width: 700px;
     height: 20px;
     background: #af51bf;
     position: sticky;
@@ -13,6 +13,8 @@ body {
     border-radius: 5px;
     overflow: hidden;
     opacity: .5;
+    margin: 0 auto;
+    margin-bottom: 1em;
   }
   .progress-bar {
     height: 20px;
@@ -106,5 +108,7 @@ body {
   }
   .display {
     height: auto;
-    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 1em;
   }
