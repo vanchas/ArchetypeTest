@@ -500,3 +500,4 @@ function scrollFunction() {
   document.querySelector('.progress-bar').style.width = scrolled + "%";
   document.querySelector('.progress-bar').innerHTML = `<span>...</span>` + Math.round(scrolled) + "%";
 }
+// jjjjjjjjj
