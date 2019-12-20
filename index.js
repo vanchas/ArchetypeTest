@@ -460,7 +460,7 @@ function renderSubmit() {
           if (radio[radioItem].checked && 
               radio[radioItem].getAttribute('data-id') == archetypes[archetype].id) {
             archetypes[archetype].counting.push(radio[radioItem].value);
-            archetypes[archetype].counting = archetypes[archetype].counting.reduce((sum, current) => sum + parseInt(current), 0);
+            archetypes[archetype].counting.reduce((sum, current) => sum + parseInt(current), 0);
           }
        }
      }
