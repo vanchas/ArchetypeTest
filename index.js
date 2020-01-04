@@ -290,23 +290,18 @@ const questions = [
  ];
 const answers = [
    {
-     'weight': 1,
      'answer': "Полностью не согласен"
    },
    {
-     'weight': 2,
      'answer': "Не согласен"
    },
    {
-     'weight': 3,
      'answer': "Не уверен"
    },
    {
-     'weight': 4,
      'answer': "Согласен"
    },
    {
-     'weight': 5,
      'answer': "Полностью согласен"
    }
  ];
@@ -385,118 +380,124 @@ const archetypes = [
    }
  ];
  
-function renderForm() {
- let form = document.createElement('form');
- form.className = 'wrapper';
- document.body.append(form);
- form.setAttribute('method', 'post');
- form.setAttribute('onsubmit', 'FA(sortByCount, renderResult);return false;');
- form.setAttribute('name', 'set_from');
-}
-renderForm();
- 
- let attributeDataId;
- 
- function renderFormInner(questions) {
-   let form = document.querySelector('.wrapper');
-   
-   let fieldset = document.createElement('fieldset');
-   form.append(fieldset);
-   fieldset.className = 'container';
- 
-   let legend = document.createElement('legend');
-   fieldset.append(legend);
-   legend.className = 'question';
-   legend.textContent = questions.question;
-   fieldset.setAttribute('data-id', questions.archetypeId);
-   attributeDataId = fieldset.getAttribute('data-id');
-   
-   function renderInputAndLabel(answerItem,answerIndex) {
-     let label = document.createElement('label');
-     fieldset.append(label);
-     label.className = 'label';
-     label.textContent = answers[answerIndex].answer;
-     
-     let input = document.createElement('input');
-     label.prepend(input);
-     input.className = 'input';
-     input.setAttribute('type', 'radio');
-     input.setAttribute('value', answerIndex + 1);
-     input.setAttribute('data-id', attributeDataId);
-   }
-   answers.forEach((answerItem,answerIndex) => {
-     renderInputAndLabel(answerItem,answerIndex);
-   });
+ function renderForm() {
+  let form = document.createElement('form');
+  form.className = 'wrapper';
+  document.body.append(form);
+  form.setAttribute('method', 'post');
+  form.setAttribute('onsubmit', 'FA(sortByCount, renderResult);return false;');
+  form.setAttribute('name', 'set_from');
  }
- 
- questions.forEach((question) => {
-   renderFormInner(question);  
- });
- 
- let questionsCollection = document.querySelectorAll('.container');
- questionsCollection.forEach((collectionItem,collectionIndex) => {
-   let inputs = collectionItem.querySelectorAll('.input');
-   inputs.forEach((input, index) => {
-     inputs[index].setAttribute('name', collectionIndex);
-   });
-   collectionItem.lastChild.querySelector('.input').setAttribute('required', 'required');
- });
-
-function renderSubmit() {
-  let form = document.querySelector('.wrapper');
+ renderForm();
   
-  let submit = document.createElement('input');
-  submit.setAttribute('type', 'submit');
-  submit.setAttribute('value', 'Узнать результат');
-  submit.className = 'btn-submit';
-  form.append(submit);
-}
- renderSubmit();
+  let attributeDataId;
+  
+  function renderFormInner(questions) {
+    let form = document.querySelector('.wrapper');
+    
+    let fieldset = document.createElement('fieldset');
+    form.append(fieldset);
+    fieldset.className = 'container';
+  
+    let legend = document.createElement('legend');
+    fieldset.append(legend);
+    legend.className = 'question';
+    legend.textContent = questions.question;
+    fieldset.setAttribute('data-id', questions.archetypeId);
+    attributeDataId = fieldset.getAttribute('data-id');
+    
+    function renderInputAndLabel(answerItem,answerIndex) {
+      let label = document.createElement('label');
+      fieldset.append(label);
+      label.className = 'label';
+      label.textContent = answers[answerIndex].answer;
+      
+      let input = document.createElement('input');
+      label.prepend(input);
+      input.className = 'input';
+      input.setAttribute('type', 'radio');
+      input.setAttribute('value', answerIndex + 1);
+      input.setAttribute('data-id', attributeDataId);
+    }
+    answers.forEach((answerItem,answerIndex) => {
+      renderInputAndLabel(answerItem,answerIndex);
+    });
+  }
+  
+  questions.forEach((question) => {
+    renderFormInner(question);  
+  });
+  
+  let questionsCollection = document.querySelectorAll('.container');
+  questionsCollection.forEach((collectionItem,collectionIndex) => {
+    const legend = collectionItem.querySelector('.question');
+    legend.prepend(collectionIndex + 1 + ". ");
+    let inputs = collectionItem.querySelectorAll('.input');
+    inputs.forEach((input, index) => {
+      inputs[index].setAttribute('name', collectionIndex);
+    });
+    collectionItem.lastChild.querySelector('.input').setAttribute('required', 'required');
+  });
  
- function FA(sortByCount, renderResult) {
-   let radio = document.getElementsByClassName('input');
-     for (let radioItem = 0; radioItem < radio.length; radioItem++) {
-       for (let archetype = 0; archetype < archetypes.length; archetype++) {
-          if (radio[radioItem].checked && 
-              radio[radioItem].getAttribute('data-id') == archetypes[archetype].id) {
-            archetypes[archetype].counting.push(radio[radioItem].value);
-            archetypes[archetype].counting.reduce((sum, current) => sum + parseInt(current), 0);
-          }
-       }
-     }
-   sortByCount(archetypes);
-   renderResult();
+ function renderSubmit() {
    let form = document.querySelector('.wrapper');
-   form.remove();
-   document.querySelector('.progress-container').remove();
-   document.querySelector('.head').textContent = "";
-   document.querySelector('.head').textContent = "Ваш результат";
-   window.scrollTo(0,0);
-   let display = document.querySelector('.display');
-   archetypes.forEach((item, index) => {
-     display.insertAdjacentHTML('beforeend', `${archetypes[index].name} <br/> ${archetypes[index].shortDescription} <hr/>`);
-   });
+   
+   let submit = document.createElement('input');
+   submit.setAttribute('type', 'submit');
+   submit.setAttribute('value', 'Узнать результат');
+   submit.className = 'btn-submit';
+   form.append(submit);
  }
- 
- function sortByCount(arr) {
+  renderSubmit();
+  
+  function FA(sortByCount, renderResult) {
+    let form = document.querySelector('.wrapper');
+    let radio = form.getElementsByClassName('input');
+      for (let radioItem = 0; radioItem < radio.length; radioItem++) {
+        for (let archetype = 0; archetype < archetypes.length; archetype++) {
+           if (radio[radioItem].checked && 
+               radio[radioItem].getAttribute('data-id') == archetypes[archetype].id) {
+             archetypes[archetype].counting.push(+radio[radioItem].value);
+             archetypes[archetype].counting.reduce((sum, current) => sum + current, 0);          
+           }
+        }
+      }
+    sortByCount(archetypes);
+    renderResult();
+    form.remove();
+    document.querySelector('.progress-container').remove();
+    document.querySelector('.head').textContent = "";
+    document.querySelector('.head').textContent = "Ваш результат";
+    window.scrollTo(0,0);
+    let display = document.querySelector('.display');
+    
+    archetypes.forEach((item, index) => {
+      display.insertAdjacentHTML('beforeend', `
+         <b>${archetypes[index].name} 
+         <i>${archetypes[index].counting.reduce((a,b)=>a+b)}</i></b>
+         <br/> ${archetypes[index].shortDescription} <hr/>`);
+    });
+  }
+  
+  function sortByCount(arr) {
    arr.sort((a, b) => a.counting > b.counting ? -1 : 1);
+  }
+  
+ function renderResult() {
+    let display = document.createElement('div');
+    display.className = "display";
+    document.body.append(display);
  }
+  
+  //scroll-line
+  window.onscroll = function() {
+   scrollFunction()
+ };
  
-function renderResult() {
-   let display = document.createElement('div');
-   display.className = "display";
-   document.body.append(display);
-}
- 
- //scroll-line
- window.onscroll = function() {
-  scrollFunction()
-};
-
-function scrollFunction() {
-  let winHiddenScroll = document.body.scrollTop || document.documentElement.scrollTop;
-  let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-  let scrolled = (winHiddenScroll / height) * 100;
-  document.querySelector('.progress-bar').style.width = scrolled + "%";
-  document.querySelector('.progress-bar').innerHTML = `<span>...</span>` + Math.round(scrolled) + "%";
-}
+ function scrollFunction() {
+   let winHiddenScroll = document.body.scrollTop || document.documentElement.scrollTop;
+   let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+   let scrolled = (winHiddenScroll / height) * 100;
+   document.querySelector('.progress-bar').style.width = scrolled + "%";
+   document.querySelector('.progress-bar').innerHTML = `<span>...</span>` + Math.round(scrolled) + "%";
+ }
